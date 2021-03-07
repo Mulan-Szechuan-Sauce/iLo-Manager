@@ -1,0 +1,57 @@
+{% extends 'ilo2/base.html' %}
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3">System Status Summary</h1>
+        </div>
+    </div>
+
+    <table class="table table-sm">
+        <tbody>
+          <tr>
+            <td>Server Name</td>
+            <td>{{ server_name|default:'Unknown' }}</td>
+          </tr>
+          <tr>
+            <td>Serial Number</td>
+            <td>{{ server_serial|default:'Unknown' }}</td>
+          </tr>
+          <tr>
+            <td>UUID</td>
+            <td>{{ cUUID|default:'Unknown' }}</td>
+          </tr>
+          <tr>
+            <td>System Rom</td>
+            <td>{{ bios_version|default:'Unknown' }}</td>
+          </tr>
+          <tr>
+            <td>System Health</td>
+            <td>TODO</td>
+          </tr>
+          <tr>
+            <td>System Power</td>
+            <td>{{ power_status|default:'Unknown' }}</td>
+          </tr>
+          <tr>
+            <td>UID Light</td>
+            <td>{{ uid_status|default:'Unknown' }}</td>
+          </tr>
+          <tr>
+            <td>Latest IML Entry</td>
+            <td>{{ latest_iml|default:'Unknown' }}</td>
+          </tr>
+          <tr>
+            <td>License Type</td>
+            <td>{{ license_type|default:'Unknown' }}</td>
+          </tr>
+          <tr>
+            <td>iLo2 Firmware Version</td>
+            <td>{{ firmware_version|default:'Unknown' }}</td>
+          </tr>
+          <tr>
+            <td>Latest iLo2 Event Log Entry</td>
+            <td>{{ latest_ilo|default:'Unknown' }}</td>
+          </tr>
+        </tbody>
+      </table>
+{% endblock %}

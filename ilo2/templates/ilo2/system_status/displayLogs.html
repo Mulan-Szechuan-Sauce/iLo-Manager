@@ -1,0 +1,37 @@
+{% extends 'ilo2/base.html' %}
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3">iLo2 Event Log</h1>
+        </div>
+    </div>
+
+    <table class="table table-sm">
+        <thead>
+          <tr>
+            <td scope="col">Severity</td>
+            <td scope="col">Class</td>
+            <td scope="col">Last Update</td>
+            <td scope="col">Initial Update</td>
+            <td scope="col">Count</td>
+            <td scope="col">Description</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for event in events %}
+          <tr>
+            <td>{{ event.severity|default:'Unknown' }}</td>
+            <td>{{ event.class|default:'Unknown' }}</td>
+            <td>{{ event.last_update|default:'Unknown' }}</td>
+            <td>{{ event.initial_update|default:'Unknown' }}</td>
+            <td>{{ event.count|default:'Unknown' }}</td>
+            <td>{{ event.description|default:'Unknown' }}</td>
+          </tr>
+          {% empty %}
+            <tr>
+              <td>No iLo 2 log entries.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+{% endblock %}

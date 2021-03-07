@@ -1,0 +1,267 @@
+{% extends 'ilo2/base.html' %}
+
+{% block js %}
+<script>
+  $(document).ready(function() {
+    $('#healthTabs div').hide();
+    $('#summary').show();
+});
+  $('#navbarsHealth .nav-link').click(function() {
+      $('#navbarsHealth li').removeClass('active');
+      $('#healthTabs div').hide();
+      $(this).closest('li').addClass('active');
+      var target = '#' + $(this).data('target');
+      $(target).show();
+  })
+</script>
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3">System Health</h1>
+        </div>
+    </div>
+
+    {% block health_navbar %}
+      {% include  'ilo2/system_status/healthNavbar.html' %}
+    {% endblock %}
+
+    <div id="healthTabs">
+      <div id="summary">
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td>Fans</td>
+              <td>{{ fan_summary|default:'Unknown' }}</td>
+            </tr>
+            <tr>
+              <td>Tempreatures</td>
+              <td>{{ temp_summary|default:'Unknown' }}</td>
+            </tr>
+            <tr>
+              <td>VRMs</td>
+              <td>{{ vrm_summary|default:'Unknown' }}</td>
+            </tr>
+            <tr>
+              <td>Power Supplies</td>
+              <td>{{ psu_summary|default:'Unknown' }}</td>
+            </tr>
+            <tr>
+              <td>Drives</td>
+              <td>{{ drive_summary|default:'Unknown' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="fans">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <td></td>
+              <td scope="col">Location</td>
+              <td scope="col">Status</td>
+              <td scope="col">Speed</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for fan in fan_details %}
+            <tr>
+              <td scope="row">{{ fan.label }}</td>
+              <td>{{ fan.zone }}</td>
+              <td>{{ fan.status }}</td>
+              <td>{{ fan.speed }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td>No fans detected.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="tempreature">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <td></td>
+              <td scope="col">Location</td>
+              <td scope="col">Status</td>
+              <td scope="col">Reading</td>
+              <td scope="col">Thresholds</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for temp_sensor in temp_details %}
+            <tr>
+              <td scope="row">{{ temp_sensor.label }}</td>
+              <td>{{ temp_sensor.location }}</td>
+              <td>{{ temp_sensor.status }}</td>
+              <td>{{ temp_sensor.current }}</td>
+              <td>{{ temp_sensor.threshold }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td>No tempreature sensors detected.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="power">
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td scope="col">Current Power Usage</td>
+              <td>{{ current_power }}</td>
+            </tr>
+            <tr>
+              <td>Power Microcontroller Firmware</td>
+              <td>Version {{ power_firmware }}</td>
+            </tr>
+          </tbody>
+        </table> </br>
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <td></td>
+              <td scope="col">Status</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for power_supply in power_supply_details %}
+            <tr>
+              <td scope="row">{{ power_supply.label }}</td>
+              <td>{{ power_supply.status }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td>No power supplies detected.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="processor">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <td></td>
+              <td scope="col">Speed</td>
+              <td scope="col">Execution Technology</td>
+              <td scope="col">Memory Technology</td>
+              <td scope="col">L1 Cache</td>
+              <td scope="col">L2 Cache</td>
+              <td scope="col">L3 Cache</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for processor in processor_details %}
+            <tr>
+              <td scope="row">{{ processor.label }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>{{ processor.speed }}</td>
+              <td>{{ processor.execution_technology }}</td>
+              <td>{{ processor.memory_technology }}</td>
+              <td>{{ processor.l1_cache|default:'Unknown' }}</td>
+              <td>{{ processor.l2_cache|default:'Unknown' }}</td>
+              <td>{{ processor.l3_cache|default:'Unknown' }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td>No processors detected.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="memory">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <td></td>
+              <td scope="col">Size</td>
+              <td scope="col">Speed</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for memory_module in memory_details %}
+            <tr>
+              <td>{{ memory_module.label }}</td>
+              <td>{{ memory_module.size }}</td>
+              <td>{{ memory_module.speed|default:'Not Applicable' }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td>No memory modules detected.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="network">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <td scope="col">Port</td>
+              <td scope="col">MAC Address</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for network_module in network_details %}
+            <tr>
+              <td>{{ network_module.label }}</td>
+              <td>{{ network_module.mac }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td>No network modules detected.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="storage">
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td scope="col">Backplane Firmware Verstion</td>
+              <td>Unknown</td>
+            </tr>
+          </tbody>
+        </table> </br>
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <td scope="col">Drive Bay</td>
+              <td scope="col">Product ID</td>
+              <td scope="col">Drive Staus</td>
+              <td scope="col">UID</td>
+            </tr>
+          </thead>
+            <tr>
+              <td scope="row">Unknown</td>
+              <td>Unknown</td>
+              <td>Unknown</td>
+              <td>Unknown</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+{% endblock %}

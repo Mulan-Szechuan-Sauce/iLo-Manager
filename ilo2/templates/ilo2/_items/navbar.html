@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">iLo2 Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% if '/ilo2/' == request.path %}active {% endif %}">
+                <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item dropdown {% if '/ilo2/systemStatus' in request.path %}active {% endif %}">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">System Status</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'systemStatusSummary' %}">Summary</a></li>
+                    <li><a class="dropdown-item" href="{% url 'systemStatusHealth' %}">System Health</a></li>
+                    <li><a class="dropdown-item" href="{% url 'systemStatusIloLog' %}">iLo 2 Log</a></li>
+                    <li><a class="dropdown-item" href="{% url 'systemStatusIMLLog' %}">IML</a></li>
+                    <li><a class="dropdown-item" href="{% url 'systemStatusSummary' %}">Diagnostics</a></li>
+                </ul>
+            </li>
+            <li class="nav-item {% if '/ilo2/remoteConsole' == request.path %}active {% endif %}">
+                <a class="nav-link" href="{% url 'remoteConsole' %}">Remote Console</a>
+            </li>
+            <li class="nav-item {% if '/ilo2/virtualMedia' == request.path %}active {% endif %}">
+                <a class="nav-link" href="{% url 'virtualMedia' %}">Virtual Media</a>
+            </li>
+            <li class="nav-item {% if '/ilo2/powerManagement' == request.path %}active {% endif %}">
+                <a class="nav-link" href="{% url 'powerManagement' %}">Power Management</a>
+            </li>
+            <li class="nav-item {% if '/ilo2/administration' == request.path %}active {% endif %}">
+                <a class="nav-link" href="{% url 'administration' %}">Administraton</a>
+            </li>
+        </ul>
+        {% if request.session.valid_credentials_stored %}
+            <ul class="navbar-nav mr-right">
+                <li class="nav-item">
+                    <a class="nav-link"">Connected to {{ request.session.hostname }}</a>
+                </li>
+                <form class="form-inline my-2 my-lg-0" action="{% url 'systemStatus' %}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Disconnect</button>
+                </form>
+            </ul>
+        {% else %}
+            <form class="form-inline my-2 my-lg-0" action="{% url 'systemStatus' %}" method="POST">
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" type="text" placeholder="Hostname" aria-label="Hostname"
+                       name="hostname" id="id_hostname">
+                <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username"
+                       name="username" id="id_username">
+                <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password"
+                       name="password" id="id_password">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Connect</button>
+            </form>
+        {% endif %}
+    </div>
+</nav>

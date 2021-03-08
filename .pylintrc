@@ -1,0 +1,7 @@
+[MASTER]
+disable = 
+    C0114, # missing-module-docstring
+    C0115, # missing-class-docstring
+    W0511, # fixme
+
+ignored-argument-names = args|kwargs

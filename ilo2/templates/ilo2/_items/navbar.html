@@ -20,11 +20,14 @@
                     <li><a class="dropdown-item" href="{% url 'systemStatusSummary' %}">Diagnostics</a></li>
                 </ul>
             </li>
-            <li class="nav-item {% if '/ilo2/remoteConsole' == request.path %}active {% endif %}">
-                <a class="nav-link" href="{% url 'remoteConsole' %}">Remote Console</a>
-            </li>
             <li class="nav-item {% if '/ilo2/virtualMedia' == request.path %}active {% endif %}">
-                <a class="nav-link" href="{% url 'virtualMedia' %}">Virtual Media</a>
+                <a class="nav-link" href="{% url 'virtualMedia' %}">Remote Console</a>
+            </li>
+            <li class="nav-item dropdown {% if '/ilo2/systemStatus' in request.path %}active {% endif %}">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Virtual Media</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'virtualMediaSummary' %}">Summary</a></li>
+                </ul>
             </li>
             <li class="nav-item {% if '/ilo2/powerManagement' == request.path %}active {% endif %}">
                 <a class="nav-link" href="{% url 'powerManagement' %}">Power Management</a>
